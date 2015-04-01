@@ -6,6 +6,11 @@
 //  Copyright (c) 2015 Maria Miller. All rights reserved.
 //
 
+#include <OpenGL/gl.h>
+#include <OpenGL/glu.h>
+#include <GLUT/GLUT.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <iostream>
 
 int main(int argc, const char * argv[]) {
