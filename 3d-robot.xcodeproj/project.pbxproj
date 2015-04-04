@@ -7,7 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5EC50DA01ACCA0F300021BEF /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5EC50D9F1ACCA0F300021BEF /* main.cpp */; };
+		5E77E86E1ACF5A830006C70D /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E77E86D1ACF5A830006C70D /* Cocoa.framework */; };
+		5E77E8701ACF5A930006C70D /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E77E86F1ACF5A930006C70D /* OpenGL.framework */; };
+		5E77E87A1ACF5ADE0006C70D /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E77E8791ACF5ADE0006C70D /* GLUT.framework */; };
+		5E77E87D1ACF73990006C70D /* robot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E77E87B1ACF73990006C70D /* robot.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -23,8 +26,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5E77E86D1ACF5A830006C70D /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		5E77E86F1ACF5A930006C70D /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		5E77E8791ACF5ADE0006C70D /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
+		5E77E87B1ACF73990006C70D /* robot.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = robot.cpp; sourceTree = "<group>"; };
+		5E77E87C1ACF73990006C70D /* robot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = robot.h; sourceTree = "<group>"; };
 		5EC50D9C1ACCA0F300021BEF /* 3d-robot */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "3d-robot"; sourceTree = BUILT_PRODUCTS_DIR; };
-		5EC50D9F1ACCA0F300021BEF /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -32,6 +39,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5E77E87A1ACF5ADE0006C70D /* GLUT.framework in Frameworks */,
+				5E77E8701ACF5A930006C70D /* OpenGL.framework in Frameworks */,
+				5E77E86E1ACF5A830006C70D /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -41,6 +51,9 @@
 		5EC50D931ACCA0F300021BEF = {
 			isa = PBXGroup;
 			children = (
+				5E77E8791ACF5ADE0006C70D /* GLUT.framework */,
+				5E77E86F1ACF5A930006C70D /* OpenGL.framework */,
+				5E77E86D1ACF5A830006C70D /* Cocoa.framework */,
 				5EC50D9E1ACCA0F300021BEF /* 3d-robot */,
 				5EC50D9D1ACCA0F300021BEF /* Products */,
 			);
@@ -57,7 +70,8 @@
 		5EC50D9E1ACCA0F300021BEF /* 3d-robot */ = {
 			isa = PBXGroup;
 			children = (
-				5EC50D9F1ACCA0F300021BEF /* main.cpp */,
+				5E77E87B1ACF73990006C70D /* robot.cpp */,
+				5E77E87C1ACF73990006C70D /* robot.h */,
 			);
 			path = "3d-robot";
 			sourceTree = "<group>";
@@ -118,7 +132,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5EC50DA01ACCA0F300021BEF /* main.cpp in Sources */,
+				5E77E87D1ACF73990006C70D /* robot.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -154,11 +168,12 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_INHIBIT_ALL_WARNINGS = YES;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
@@ -189,11 +204,12 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_INHIBIT_ALL_WARNINGS = YES;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
 			};
@@ -232,6 +248,7 @@
 				5EC50DA51ACCA0F300021BEF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
