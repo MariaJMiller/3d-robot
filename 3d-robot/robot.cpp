@@ -1,4 +1,3 @@
-//
 //  robot.cpp
 //  3d-robot
 //
@@ -12,19 +11,55 @@
 #include <OpenGL/gl.h>
 #include <OpenGL/glu.h>
 
+// Create a sphere for the head.
 void makeHead() {
+    glPushMatrix();
+    glColor3d(1, 0.5, 0.5);
+    glTranslated(-2, 1.5, -6);
+    glutSolidSphere(1, 50, 50);
+    glPopMatrix();
 
+}
+
+// Create eyes
+void makeEyes() {
+    // left eye
+    glPushMatrix();
+    glColor3d(0, 0, 0.5);
+    glTranslated(0, 1.5, -6);
+    glScaled(0.1, 0.1, 0.1);
+    glutSolidSphere(1, 50, 50);
+    glPopMatrix();
+    
+    // right eye
+    glPushMatrix();
+    glColor3d(0, 0, 0.5);
+    glTranslated(-0.5, 1.5, -6);
+    glScaled(0.1, 0.1, 0.1);
+    glutSolidSphere(1, 50, 50);
+    glPopMatrix();
+}
+
+// Create a square for the body.
+void makeBody() {
+    
+}
+
+// Create arms
+void makeArms() {
+    
+}
+
+// Create legs
+void makeLegs() {
+    
 }
 
 void display(void) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
-    glPushMatrix();
-    glColor3d(1, 0.5, 0.5);
-    glTranslated(-2.0, 1.5, -6);
-    glutSolidSphere(1, 50, 50);
-    glPopMatrix();
-
+    //makeHead();
+    makeEyes();
     glutSwapBuffers();
 }
 
@@ -68,16 +103,14 @@ int main(int argc, char** argv) {
     
     glutCreateWindow("3D Robot");
     
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-    
     glutDisplayFunc(display);
     glutReshapeFunc(reshape);
     glutSpecialFunc(keyboard);
     glutIdleFunc(idle);
     
     glClearColor(1,1,1,1);
-    glEnable(GL_CULL_FACE);
-    glCullFace(GL_BACK);
+   // glEnable(GL_CULL_FACE);
+   // glCullFace(GL_BACK);
     
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
