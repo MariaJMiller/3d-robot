@@ -11,11 +11,19 @@
 #include <OpenGL/gl.h>
 #include <OpenGL/glu.h>
 
+struct vec3 {
+    GLdouble x;
+    GLdouble y;
+    GLdouble z;
+};
+vec3 rotation;
+
 // Create a sphere for the head.
 void makeHead() {
     glPushMatrix();
     glColor3d(1, 0.5, 0.5);
-    glTranslated(-2, 1.5, -6);
+    glTranslated(0, 1.5, -6);
+    glScaled(0.5, 0.5, 0.5);
     glutSolidSphere(1, 50, 50);
     glPopMatrix();
 
@@ -25,7 +33,7 @@ void makeHead() {
 void makeEyes() {
     // left eye
     glPushMatrix();
-    glColor3d(0, 0, 0.5);
+    glColor3d(1, 1, 1);
     glTranslated(0, 1.5, -6);
     glScaled(0.1, 0.1, 0.1);
     glutSolidSphere(1, 50, 50);
@@ -33,7 +41,7 @@ void makeEyes() {
     
     // right eye
     glPushMatrix();
-    glColor3d(0, 0, 0.5);
+    glColor3d(1, 1, 1);
     glTranslated(-0.5, 1.5, -6);
     glScaled(0.1, 0.1, 0.1);
     glutSolidSphere(1, 50, 50);
@@ -42,11 +50,62 @@ void makeEyes() {
 
 // Create a square for the body.
 void makeBody() {
+    // a colored cube of six surfaces
+    glPushMatrix();
+    glBegin(GL_POLYGON);
+    glColor3f(1, 0, 0);
+    glVertex3f( 1, -1, -1);
+    glVertex3f( 1, 1, -1);
+    glVertex3f(-1, 1, -1);
+    glVertex3f(-1, -1, -1);
+    glEnd();
+    
+    glBegin(GL_POLYGON);
+    glColor3f(1, 0, 0);
+    glVertex3f(0.5, -0.5, 0.5);
+    glVertex3f(0.5, 0.5, 0.5);
+    glVertex3f(-0.5, 0.5, 0.5);
+    glVertex3f(-0.5, -0.5, 0.5);
+    glEnd();
+    
+    glBegin(GL_POLYGON);
+    glColor3f(1, 0, 0);
+    glVertex3f(0.5, -0.5, -0.5);
+    glVertex3f(0.5, 0.5, -0.5);
+    glVertex3f(0.5, 0.5, 0.5);
+    glVertex3f(0.5, -0.5, -0.5);
+    glEnd();
+    
+    glBegin(GL_POLYGON);
+    glColor3f(1, 0, 0);
+    glVertex3f(-0.5, -0.5,  0.5);
+    glVertex3f(-0.5,  0.5,  0.5);
+    glVertex3f(-0.5,  0.5, -0.5);
+    glVertex3f(-0.5, -0.5, -0.5);
+    glEnd();
+    
+    glBegin(GL_POLYGON);
+    glColor3f(1, 0, 0);
+    glVertex3f(0.5,  0.5,  0.5);
+    glVertex3f(0.5,  0.5, -0.5);
+    glVertex3f(-0.5,  0.5, -0.5);
+    glVertex3f(-0.5,  0.5,  0.5);
+    glEnd();
+    
+    glBegin(GL_POLYGON);
+    glColor3f(1, 0, 0);
+    glVertex3f(0.5, -0.5, -0.5);
+    glVertex3f(0.5, -0.5,  0.5);
+    glVertex3f(-0.5, -0.5,  0.5);
+    glVertex3f(-0.5, -0.5, -0.5);
+    glEnd();
+    glPopMatrix();
     
 }
 
 // Create arms
 void makeArms() {
+    
     
 }
 
@@ -58,8 +117,12 @@ void makeLegs() {
 void display(void) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
-    //makeHead();
+    
+    makeHead();
     makeEyes();
+    makeBody();
+    
+    //glFlush();
     glutSwapBuffers();
 }
 
@@ -99,7 +162,7 @@ int main(int argc, char** argv) {
     glutInit(&argc, argv);
     
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
-    glutInitWindowSize(640, 480);
+    glutInitWindowSize(700, 700);
     
     glutCreateWindow("3D Robot");
     
@@ -109,18 +172,14 @@ int main(int argc, char** argv) {
     glutIdleFunc(idle);
     
     glClearColor(1,1,1,1);
-   // glEnable(GL_CULL_FACE);
-   // glCullFace(GL_BACK);
-    
     glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LESS);
-    
+ 
     glEnable(GL_LIGHT0);
     glEnable(GL_NORMALIZE);
     glEnable(GL_COLOR_MATERIAL);
     glEnable(GL_LIGHTING);
-    
-    
+
     glutMainLoop();
+    
     return EXIT_SUCCESS;
 }
