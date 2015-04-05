@@ -11,132 +11,53 @@
 #include <OpenGL/gl.h>
 #include <OpenGL/glu.h>
 
-struct vec3 {
-    GLdouble x;
-    GLdouble y;
-    GLdouble z;
-};
-vec3 rotation;
-
-// Create a sphere for the head.
-void makeHead() {
-    glPushMatrix();
-    glColor3d(1, 0.5, 0.5);
-    glTranslated(0, 1.5, -6);
-    glScaled(0.5, 0.5, 0.5);
-    glutSolidSphere(1, 50, 50);
-    glPopMatrix();
-
+void init() {
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
+    glEnable(GL_COLOR_MATERIAL);
 }
 
-// Create eyes
-void makeEyes() {
-    // left eye
-    glPushMatrix();
-    glColor3d(1, 1, 1);
-    glTranslated(0, 1.5, -6);
-    glScaled(0.1, 0.1, 0.1);
-    glutSolidSphere(1, 50, 50);
-    glPopMatrix();
-    
-    // right eye
-    glPushMatrix();
-    glColor3d(1, 1, 1);
-    glTranslated(-0.5, 1.5, -6);
-    glScaled(0.1, 0.1, 0.1);
-    glutSolidSphere(1, 50, 50);
-    glPopMatrix();
-}
-
-// Create a square for the body.
-void makeBody() {
-    // a colored cube of six surfaces
-    glPushMatrix();
-    glBegin(GL_POLYGON);
-    glColor3f(1, 0, 0);
-    glVertex3f( 1, -1, -1);
-    glVertex3f( 1, 1, -1);
-    glVertex3f(-1, 1, -1);
-    glVertex3f(-1, -1, -1);
-    glEnd();
-    
-    glBegin(GL_POLYGON);
-    glColor3f(1, 0, 0);
-    glVertex3f(0.5, -0.5, 0.5);
-    glVertex3f(0.5, 0.5, 0.5);
-    glVertex3f(-0.5, 0.5, 0.5);
-    glVertex3f(-0.5, -0.5, 0.5);
-    glEnd();
-    
-    glBegin(GL_POLYGON);
-    glColor3f(1, 0, 0);
-    glVertex3f(0.5, -0.5, -0.5);
-    glVertex3f(0.5, 0.5, -0.5);
-    glVertex3f(0.5, 0.5, 0.5);
-    glVertex3f(0.5, -0.5, -0.5);
-    glEnd();
-    
-    glBegin(GL_POLYGON);
-    glColor3f(1, 0, 0);
-    glVertex3f(-0.5, -0.5,  0.5);
-    glVertex3f(-0.5,  0.5,  0.5);
-    glVertex3f(-0.5,  0.5, -0.5);
-    glVertex3f(-0.5, -0.5, -0.5);
-    glEnd();
-    
-    glBegin(GL_POLYGON);
-    glColor3f(1, 0, 0);
-    glVertex3f(0.5,  0.5,  0.5);
-    glVertex3f(0.5,  0.5, -0.5);
-    glVertex3f(-0.5,  0.5, -0.5);
-    glVertex3f(-0.5,  0.5,  0.5);
-    glEnd();
-    
-    glBegin(GL_POLYGON);
-    glColor3f(1, 0, 0);
-    glVertex3f(0.5, -0.5, -0.5);
-    glVertex3f(0.5, -0.5,  0.5);
-    glVertex3f(-0.5, -0.5,  0.5);
-    glVertex3f(-0.5, -0.5, -0.5);
-    glEnd();
-    glPopMatrix();
-    
-}
-
-// Create arms
-void makeArms() {
-    
-    
-}
-
-// Create legs
-void makeLegs() {
-    
-}
-
-void display(void) {
+static void display(void) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    GLint viewport[4];
+    glGetIntegerv(GL_VIEWPORT, viewport);
+    double aspect = (double)viewport[2] / (double)viewport[3];
+    gluPerspective(60, aspect, 1, 40);
+    
+    glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     
-    makeHead();
-    makeEyes();
-    makeBody();
+    // Move back
+    glTranslatef(0, 0, -35);
     
-    //glFlush();
+    static float angle = 0;
+    
+    // Create body
+    glPushMatrix();
+    glTranslatef(0, 0, 0);
+    glRotatef(angle, 0.5, 0.2, 0.5);
+    glColor3f(1, 1, 0);
+    glutSolidCube(10);
+    glPopMatrix();
+    
+    // Create head
+    glPushMatrix();
+    glTranslatef(0, 8, 0);
+    glRotatef(angle, 0.5, 0.2, 0.5);
+    glColor3f(1, 1, 0);
+    glutSolidCube(5);
+    glPopMatrix();
+    
     glutSwapBuffers();
 }
 
-void reshape(int width, int height) {
-    const float ar = (float) width / (float) height;
+
+static void reshape(int width, int height) {
     
     glViewport(0, 0, width, height);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glFrustum(-ar, ar, -1.0, 1.0, 2.0, 100.0);
-    
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity() ;
-    
 }
 
 void keyboard(int key, int x, int y) {
@@ -149,36 +70,24 @@ void keyboard(int key, int x, int y) {
         case 'j': break;    // Jump
         case 't': break;    // Turn around
         case 'w': break;    // Wave arms
-        case 'q': break;    // Quit
+        case 'q': exit(0); break;    // Quit
             
     }
-}
-
-void idle(void) {
     glutPostRedisplay();
 }
 
+
 int main(int argc, char** argv) {
     glutInit(&argc, argv);
-    
-    glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
     glutInitWindowSize(700, 700);
-    
+    glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE);
     glutCreateWindow("3D Robot");
     
     glutDisplayFunc(display);
     glutReshapeFunc(reshape);
-    glutSpecialFunc(keyboard);
-    glutIdleFunc(idle);
     
-    glClearColor(1,1,1,1);
-    glEnable(GL_DEPTH_TEST);
- 
-    glEnable(GL_LIGHT0);
-    glEnable(GL_NORMALIZE);
-    glEnable(GL_COLOR_MATERIAL);
-    glEnable(GL_LIGHTING);
-
+    init();
+    
     glutMainLoop();
     
     return EXIT_SUCCESS;
