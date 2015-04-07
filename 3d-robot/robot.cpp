@@ -18,6 +18,10 @@ void init() {
     glEnable(GL_COLOR_MATERIAL);
 }
 
+static void createRobot() {
+    
+}
+
 static void display(void) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_PROJECTION);
@@ -31,7 +35,7 @@ static void display(void) {
     glLoadIdentity();
     
     // Move back
-    glTranslatef(0, 0, -35);
+    glTranslatef(0, 10, -40);
     
     static float angle = 0;
     
@@ -50,6 +54,42 @@ static void display(void) {
     glColor3f(1, 1, 0);
     glutSolidCube(5);
     glPopMatrix();
+    
+    // Create right leg
+    glPushMatrix();
+    glTranslatef(-3, -7, 0);
+    glRotatef(angle, 0.5, 0.2, 0.5);
+    glColor3f(1, 1, 0);
+    glScalef(0.7, 2, 1);
+    glutSolidCube(5);
+    glPopMatrix();
+    
+    // Create left leg
+    glPushMatrix();
+    glTranslatef(3, -7, 0);
+    glRotatef(angle, 0.5, 0.2, 0.5);
+    glColor3f(1, 1, 0);
+    glScalef(0.7, 2, 1);
+    glutSolidCube(5);
+    glPopMatrix();
+    
+    // Arrms
+    glPushMatrix();
+    glTranslatef(8, 0, 0);
+    glRotatef(angle+20, 0.5, 0.2, 0.5);
+    glColor3f(1, 1, 0);
+    glScalef(0.5, 1.8, 0.5);
+    glutSolidCube(5);
+    glPopMatrix();
+    
+    glPushMatrix();
+    glTranslatef(-8, 0, 0);
+    glRotatef(angle-20, 0.5, 0.2, 0.5);
+    glColor3f(1, 1, 0);
+    glScalef(0.5, 1.8, 0.5);
+    glutSolidCube(5);
+    glPopMatrix();
+    
     
     glutSwapBuffers();
 }
