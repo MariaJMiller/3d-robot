@@ -23,10 +23,12 @@ struct color {
     GLdouble b;
 };
 
-rotation robotRotate;
+rotation headRotate;
+rotation bodyRotate;
 rotation armRotate;
 rotation legRotate;
 color robotColor;
+color eyeColor;
 
 void init() {
     glEnable(GL_DEPTH_TEST);
@@ -46,51 +48,68 @@ static void createRobot() {
     // Create body
     glPushMatrix();
     glTranslatef(0, 0, 0);
-    glRotatef(angle, 0.5, 0.2, 0.5);
+    glRotatef(angle, bodyRotate.x, bodyRotate.y, bodyRotate.z);
     glColor3f(robotColor.r, robotColor.g, robotColor.b);
     glutSolidCube(10);
     glPopMatrix();
-    
+
     // Create head
     glPushMatrix();
     glTranslatef(0, 8, 0);
-    glRotatef(angle, 0.5, 0.2, 0.5);
+    glRotatef(angle, headRotate.x, headRotate.y, headRotate.z);
     glColor3f(robotColor.r, robotColor.g, robotColor.b);
     glutSolidCube(5);
     glPopMatrix();
     
     // Create right leg
     glPushMatrix();
-    glTranslatef(-3, -7, 0);
-    glRotatef(angle, 0.5, 0.2, 0.5);
+    glTranslatef(-3, -11, 0);
+    glRotatef(angle, legRotate.x, legRotate.y, legRotate.z);
     glColor3f(robotColor.r, robotColor.g, robotColor.b);
-    glScalef(0.7, 2.5, 1);
+    glScalef(0.7, 2.2, 1);
     glutSolidCube(5);
     glPopMatrix();
     
     // Create left leg
     glPushMatrix();
-    glTranslatef(3, -7, 0);
-    glRotatef(angle, 0.5, 0.2, 0.5);
+    glTranslatef(3, -11, 0);
+    glRotatef(angle, legRotate.x, legRotate.y, legRotate.z);
     glColor3f(robotColor.r, robotColor.g, robotColor.b);
-    glScalef(0.7, 2.5, 1);
+    glScalef(0.7, 2.2, 1);
     glutSolidCube(5);
     glPopMatrix();
     
-    // Arms
-    glPushMatrix();
-    glTranslatef(8, 0, 0);
-    glRotatef(angle+20, 0.5, 0.2, 0.5);
-    glColor3f(robotColor.r, robotColor.g, robotColor.b);
-    glScalef(0.5, 1.8, 0.5);
-    glutSolidCube(5);
-    glPopMatrix();
-    
+    // Right arm
     glPushMatrix();
     glTranslatef(-8, 0, 0);
-    glRotatef(angle-20, 0.5, 0.2, 0.5);
+    glRotatef(angle, armRotate.x, armRotate.y, armRotate.z);
     glColor3f(robotColor.r, robotColor.g, robotColor.b);
     glScalef(0.5, 1.8, 0.5);
+    glutSolidCube(5);
+    glPopMatrix();
+    
+    // Left arm
+    glPushMatrix();
+    glTranslatef(8, 0, 0);
+    glRotatef(angle, armRotate.x, armRotate.y, armRotate.z);
+    glColor3f(robotColor.r, robotColor.g, robotColor.b);
+    glScalef(0.5, 1.8, 0.5);
+    glutSolidCube(5);
+    glPopMatrix();
+    
+    // Right eye
+    glPushMatrix();
+    glTranslatef(-0.75, 8, 4);
+    glColor3f(1, 1, 1);
+    glScalef(0.1, 0.1, 0.1);
+    glutSolidCube(5);
+    glPopMatrix();
+    
+    // Left eye
+    glPushMatrix();
+    glTranslatef(0.75, 8, 4);
+    glColor3f(1, 1, 1);
+    glScalef(0.1, 0.1, 0.1);
     glutSolidCube(5);
     glPopMatrix();
     
@@ -109,7 +128,7 @@ static void display(void) {
     glLoadIdentity();
     
     // Move back
-    glTranslatef(0, 10, -40);
+    glTranslatef(-5, 10, -40);
     
     // Create the robot
     createRobot();
