@@ -11,6 +11,21 @@
 #include <OpenGL/gl.h>
 #include <OpenGL/glu.h>
 
+struct rotation {
+    GLdouble x;
+    GLdouble y;
+    GLdouble z;
+};
+
+struct color {
+    GLdouble r;
+    GLdouble g;
+    GLdouble b;
+};
+
+rotation robotRotate;
+color robotColor;
+
 void init() {
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_LIGHTING);
@@ -19,23 +34,6 @@ void init() {
 }
 
 static void createRobot() {
-    
-}
-
-static void display(void) {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    GLint viewport[4];
-    glGetIntegerv(GL_VIEWPORT, viewport);
-    double aspect = (double)viewport[2] / (double)viewport[3];
-    gluPerspective(60, aspect, 1, 40);
-    
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    
-    // Move back
-    glTranslatef(0, 10, -40);
     
     static float angle = 0;
     
@@ -60,7 +58,7 @@ static void display(void) {
     glTranslatef(-3, -7, 0);
     glRotatef(angle, 0.5, 0.2, 0.5);
     glColor3f(1, 1, 0);
-    glScalef(0.7, 2, 1);
+    glScalef(0.7, 2.5, 1);
     glutSolidCube(5);
     glPopMatrix();
     
@@ -69,11 +67,11 @@ static void display(void) {
     glTranslatef(3, -7, 0);
     glRotatef(angle, 0.5, 0.2, 0.5);
     glColor3f(1, 1, 0);
-    glScalef(0.7, 2, 1);
+    glScalef(0.7, 2.5, 1);
     glutSolidCube(5);
     glPopMatrix();
     
-    // Arrms
+    // Arms
     glPushMatrix();
     glTranslatef(8, 0, 0);
     glRotatef(angle+20, 0.5, 0.2, 0.5);
@@ -90,6 +88,25 @@ static void display(void) {
     glutSolidCube(5);
     glPopMatrix();
     
+}
+
+static void display(void) {
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    GLint viewport[4];
+    glGetIntegerv(GL_VIEWPORT, viewport);
+    double aspect = (double)viewport[2] / (double)viewport[3];
+    gluPerspective(60, aspect, 1, 40);
+    
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    
+    // Move back
+    glTranslatef(0, 10, -40);
+    
+    // Create the robot
+    createRobot();
     
     glutSwapBuffers();
 }
