@@ -24,6 +24,8 @@ struct color {
 };
 
 rotation robotRotate;
+rotation armRotate;
+rotation legRotate;
 color robotColor;
 
 void init() {
@@ -37,11 +39,15 @@ static void createRobot() {
     
     static float angle = 0;
     
+    robotColor.r = 0;
+    robotColor.g = 1;
+    robotColor.b = 0;
+    
     // Create body
     glPushMatrix();
     glTranslatef(0, 0, 0);
     glRotatef(angle, 0.5, 0.2, 0.5);
-    glColor3f(1, 1, 0);
+    glColor3f(robotColor.r, robotColor.g, robotColor.b);
     glutSolidCube(10);
     glPopMatrix();
     
@@ -49,7 +55,7 @@ static void createRobot() {
     glPushMatrix();
     glTranslatef(0, 8, 0);
     glRotatef(angle, 0.5, 0.2, 0.5);
-    glColor3f(1, 1, 0);
+    glColor3f(robotColor.r, robotColor.g, robotColor.b);
     glutSolidCube(5);
     glPopMatrix();
     
@@ -57,7 +63,7 @@ static void createRobot() {
     glPushMatrix();
     glTranslatef(-3, -7, 0);
     glRotatef(angle, 0.5, 0.2, 0.5);
-    glColor3f(1, 1, 0);
+    glColor3f(robotColor.r, robotColor.g, robotColor.b);
     glScalef(0.7, 2.5, 1);
     glutSolidCube(5);
     glPopMatrix();
@@ -66,7 +72,7 @@ static void createRobot() {
     glPushMatrix();
     glTranslatef(3, -7, 0);
     glRotatef(angle, 0.5, 0.2, 0.5);
-    glColor3f(1, 1, 0);
+    glColor3f(robotColor.r, robotColor.g, robotColor.b);
     glScalef(0.7, 2.5, 1);
     glutSolidCube(5);
     glPopMatrix();
@@ -75,7 +81,7 @@ static void createRobot() {
     glPushMatrix();
     glTranslatef(8, 0, 0);
     glRotatef(angle+20, 0.5, 0.2, 0.5);
-    glColor3f(1, 1, 0);
+    glColor3f(robotColor.r, robotColor.g, robotColor.b);
     glScalef(0.5, 1.8, 0.5);
     glutSolidCube(5);
     glPopMatrix();
@@ -83,7 +89,7 @@ static void createRobot() {
     glPushMatrix();
     glTranslatef(-8, 0, 0);
     glRotatef(angle-20, 0.5, 0.2, 0.5);
-    glColor3f(1, 1, 0);
+    glColor3f(robotColor.r, robotColor.g, robotColor.b);
     glScalef(0.5, 1.8, 0.5);
     glutSolidCube(5);
     glPopMatrix();
