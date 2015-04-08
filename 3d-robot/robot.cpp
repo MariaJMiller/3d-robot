@@ -32,7 +32,7 @@ color eyeColor;
 
 static int rightLegMove = 0;
 static int leftLegMove = 0;
-static int move = 2;
+bool moved = false;
 
 void init() {
     glEnable(GL_DEPTH_TEST);
@@ -147,7 +147,26 @@ static void display(void) {
 }
 
 static void run () {
+
+    if (!moved) {
+        rightLegMove = 25;
+        leftLegMove = -25;
+        moved = true;
+    }
     
+    if (rightLegMove == 25) {
+        for (int i = 0; i < 50; i++) {
+            rightLegMove--;
+            leftLegMove++;
+        }
+    }
+    
+    else if (rightLegMove == -25) {
+        for (int i = 0; i < 50; i++) {
+            rightLegMove++;
+            leftLegMove--;
+        }
+    }
     
 }
 
@@ -164,7 +183,7 @@ void keyboard(int key, int x, int y) {
         case 's': break;    // Increase specular reflection
         case 'h': break;    // Increase shiny
         case 'j': break;    // Jump
-        case 'r': run();     break; // Run
+        case 'r':   run(); break;
         case 't':     break;    // Turn around
         case 'w': break;    // Wave arms
         case 'q': exit(0); break;    // Quit
