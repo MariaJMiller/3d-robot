@@ -56,7 +56,6 @@ static void createRobot() {
     // Create body
     glPushMatrix();
     glTranslatef(0, 0, 0);
-    glRotatef(angle, bodyRotate.x, bodyRotate.y, bodyRotate.z);
     glColor3f(robotColor.r, robotColor.g, robotColor.b);
     glutSolidCube(10);
     glPopMatrix();
@@ -64,7 +63,6 @@ static void createRobot() {
     // Create head
     glPushMatrix();
     glTranslatef(0, 8, 0);
-    glRotatef(angle, headRotate.x, headRotate.y, headRotate.z);
     glColor3f(robotColor.r, robotColor.g, robotColor.b);
     glutSolidCube(5);
     glPopMatrix();
@@ -90,7 +88,6 @@ static void createRobot() {
     // Right arm
     glPushMatrix();
     glTranslatef(-8, 0, 0);
-    glRotatef(angle, armRotate.x, armRotate.y, armRotate.z);
     glColor3f(robotColor.r, robotColor.g, robotColor.b);
     glScalef(0.5, 1.8, 0.5);
     glutSolidCube(5);
@@ -99,7 +96,6 @@ static void createRobot() {
     // Left arm
     glPushMatrix();
     glTranslatef(8, 0, 0);
-    glRotatef(angle, armRotate.x, armRotate.y, armRotate.z);
     glColor3f(robotColor.r, robotColor.g, robotColor.b);
     glScalef(0.5, 1.8, 0.5);
     glutSolidCube(5);
@@ -108,7 +104,6 @@ static void createRobot() {
     // Right eye
     glPushMatrix();
     glTranslatef(-0.75, 8, 4);
-    glRotatef(angle, headRotate.x, headRotate.y, headRotate.z);
     glColor3f(eyeColor.r, eyeColor.g, eyeColor.b);
     glScalef(0.1, 0.1, 0.1);
     glutSolidCube(5);
@@ -117,7 +112,6 @@ static void createRobot() {
     // Left eye
     glPushMatrix();
     glTranslatef(0.75, 8, 4);
-    glRotatef(angle, headRotate.x, headRotate.y, headRotate.z);
     glColor3f(eyeColor.r, eyeColor.g, eyeColor.b);
     glScalef(0.1, 0.1, 0.1);
     glutSolidCube(5);
@@ -141,6 +135,7 @@ static void display(void) {
     glTranslatef(-5, 10, -40);
     
     // Create the robot
+    glRotatef(bodyRotate.y, 0, 1.0f, 0);
     createRobot();
     
     glutSwapBuffers();
@@ -155,14 +150,14 @@ static void run () {
     }
     
     if (rightLegMove == 25) {
-        for (int i = 0; i < 50; i++) {
+        while (rightLegMove != -25) {
             rightLegMove--;
             leftLegMove++;
         }
     }
     
     else if (rightLegMove == -25) {
-        for (int i = 0; i < 50; i++) {
+        while (rightLegMove != 25) {
             rightLegMove++;
             leftLegMove--;
         }
@@ -183,8 +178,8 @@ void keyboard(int key, int x, int y) {
         case 's': break;    // Increase specular reflection
         case 'h': break;    // Increase shiny
         case 'j': break;    // Jump
-        case 'r':   run(); break;
-        case 't':     break;    // Turn around
+        case 'r': run();            break;
+        case 't': bodyRotate.y++;   break;    // Turn around
         case 'w': break;    // Wave arms
         case 'q': exit(0); break;    // Quit
             
