@@ -24,15 +24,16 @@ struct color {
     GLdouble b;
 };
 
-rotation headRotate;
 rotation bodyRotate;
 rotation armRotate;
 color robotColor;
 color eyeColor;
 
-static int rightLegMove = 0;
-static int leftLegMove = 0;
+static int rightRun = 0;
+static int leftRun = 0;
+int ypos = 0;
 bool moved = false;
+bool jumped = false;
 
 void init() {
     glEnable(GL_DEPTH_TEST);
@@ -57,7 +58,8 @@ static void createRobot() {
     glPushMatrix();
     glTranslatef(0, 0, 0);
     glColor3f(robotColor.r, robotColor.g, robotColor.b);
-    glutSolidCube(10);
+    glScalef(2, 2.5, 1);
+    glutSolidCube(5);
     glPopMatrix();
 
     // Create head
@@ -69,8 +71,8 @@ static void createRobot() {
     
     // Create right leg
     glPushMatrix();
-    glTranslatef(-3, -11, 0);
-    glRotatef(rightLegMove, 1.0f, 0, 0);
+    glTranslatef(-3, -12, 0);
+    glRotatef(rightRun, 1.0f, 0, 0);
     glColor3f(robotColor.r, robotColor.g, robotColor.b);
     glScalef(0.7, 2.2, 1);
     glutSolidCube(5);
@@ -78,8 +80,8 @@ static void createRobot() {
     
     // Create left leg
     glPushMatrix();
-    glTranslatef(3, -11, 0);
-    glRotatef(leftLegMove, 1.0f, 0, 0);
+    glTranslatef(3, -12, 0);
+    glRotatef(leftRun, 1.0f, 0, 0);
     glColor3f(robotColor.r, robotColor.g, robotColor.b);
     glScalef(0.7, 2.2, 1);
     glutSolidCube(5);
@@ -87,7 +89,8 @@ static void createRobot() {
     
     // Right arm
     glPushMatrix();
-    glTranslatef(-8, 0, 0);
+    glTranslatef(-7, 0, 0);
+    glRotatef(leftRun, 1.0f, 0, 0);
     glColor3f(robotColor.r, robotColor.g, robotColor.b);
     glScalef(0.5, 1.8, 0.5);
     glutSolidCube(5);
@@ -95,7 +98,8 @@ static void createRobot() {
     
     // Left arm
     glPushMatrix();
-    glTranslatef(8, 0, 0);
+    glTranslatef(7, 0, 0);
+    glRotatef(rightRun, 1.0f, 0, 0);
     glColor3f(robotColor.r, robotColor.g, robotColor.b);
     glScalef(0.5, 1.8, 0.5);
     glutSolidCube(5);
@@ -103,7 +107,7 @@ static void createRobot() {
     
     // Right eye
     glPushMatrix();
-    glTranslatef(-0.75, 8, 4);
+    glTranslatef(-0.75, 8.5, 2.5);
     glColor3f(eyeColor.r, eyeColor.g, eyeColor.b);
     glScalef(0.1, 0.1, 0.1);
     glutSolidCube(5);
@@ -111,7 +115,7 @@ static void createRobot() {
     
     // Left eye
     glPushMatrix();
-    glTranslatef(0.75, 8, 4);
+    glTranslatef(0.75, 8.5, 2.5);
     glColor3f(eyeColor.r, eyeColor.g, eyeColor.b);
     glScalef(0.1, 0.1, 0.1);
     glutSolidCube(5);
@@ -132,7 +136,7 @@ static void display(void) {
     glLoadIdentity();
     
     // Move back
-    glTranslatef(-5, 10, -40);
+    glTranslatef(-4, 8+ypos, -40);
     
     // Create the robot
     glRotatef(bodyRotate.y, 0, 1.0f, 0);
@@ -142,27 +146,49 @@ static void display(void) {
 }
 
 static void run () {
-
+    printf("RUN ");
     if (!moved) {
-        rightLegMove = 25;
-        leftLegMove = -25;
+        rightRun = 25;
+        leftRun = -25;
         moved = true;
     }
     
-    if (rightLegMove == 25) {
-        while (rightLegMove != -25) {
-            rightLegMove--;
-            leftLegMove++;
+    if (rightRun == 25) {
+        while (rightRun != -25) {
+            rightRun--;
+            leftRun++;
         }
     }
     
-    else if (rightLegMove == -25) {
-        while (rightLegMove != 25) {
-            rightLegMove++;
-            leftLegMove--;
+    else if (rightRun == -25) {
+        while (rightRun != 25) {
+            rightRun++;
+            leftRun--;
         }
     }
     
+}
+
+static void jump() {
+    
+    if (!jumped) {
+        ypos++;
+        rightRun--;
+        leftRun++;
+
+        if (ypos == 10)
+            jumped = true;
+        
+    }
+    
+    if (jumped) {
+        ypos--;
+        rightRun++;
+        leftRun--;
+        
+        if (ypos == 0)
+            jumped = false;
+    }
 }
 
 static void reshape(int width, int height) {
@@ -173,13 +199,23 @@ static void reshape(int width, int height) {
 void keyboard(int key, int x, int y) {
     switch(key) {
         case 'b': break;    // Blink eyes
-        case 'c': robotColor.r++; break;    // Change color
+        case 'c':           // Change color
+            robotColor.r++;
+            break;
         case 'd': break;    // Increase diffusive reflection
         case 's': break;    // Increase specular reflection
         case 'h': break;    // Increase shiny
-        case 'j': break;    // Jump
-        case 'r': run();            break;
-        case 't': bodyRotate.y++;   break;    // Turn around
+        case 'j':           // Jump
+            jump();
+            break;
+        case 'r':           // Run
+            run();
+            break;
+        case 't':
+            rightRun = 0;
+            leftRun = 0;
+            bodyRotate.y++;
+            break;    // Turn around
         case 'w': break;    // Wave arms
         case 'q': exit(0); break;    // Quit
             
