@@ -6,8 +6,6 @@
 //
 
 #include <cstdio>
-#include <stdio.h>
-#include <stdlib.h>
 #include <ctime>
 #include <cstdlib>
 #include <GLUT/glut.h>
@@ -196,6 +194,20 @@ static void changeColor() {
     
 }
 
+// Blink eyes by changing color to black.
+static void blink() {
+    
+    if (eyeRed == 1) {
+        eyeRed = 0;
+        eyeGreen = 0;
+        eyeBlue = 0;
+    } else {
+        eyeRed = 1;
+        eyeGreen = 1;
+        eyeBlue = 1;
+    }
+}
+
 static void reshape(int width, int height) {
     
     glViewport(0, 0, width, height);
@@ -203,7 +215,9 @@ static void reshape(int width, int height) {
 
 void keyboard(int key, int x, int y) {
     switch(key) {
-        case 'b': break;    // Blink eyes
+        case 'b':           // Blink eyes
+            blink();
+            break;
         case 'c':           // Change color
             changeColor();
             break;
