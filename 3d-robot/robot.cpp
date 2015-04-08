@@ -37,11 +37,36 @@ int eyeRed = 1;
 int eyeGreen = 1;
 int eyeBlue = 1;
 
+
+const GLfloat ambient_light[]  = { 0.0f, 0.0f, 0.0f, 1.0f };
+const GLfloat diffuse_light[]  = { 1.0f, 1.0f, 1.0f, 1.0f };
+const GLfloat specular_light[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+const GLfloat light_position[] = { 2.0f, 8.0f, 8.0f, 1.0f };
+
+GLfloat mat_ambient[]    = { 0.7f, 0.7f, 0.7f, 1.0f };
+GLfloat mat_diffuse[]    = { 0.1f, 0.1f, 0.1f, 1.0f };
+GLfloat mat_specular[]   = { 1.0f, 1.0f, 1.0f, 1.0f };
+GLfloat high_shininess[] = { 20.0f };
+
 void init() {
+    
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
     glEnable(GL_COLOR_MATERIAL);
+    
+    glLightfv(GL_LIGHT0, GL_AMBIENT, ambient_light);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse_light);
+    glLightfv(GL_LIGHT0, GL_SPECULAR, specular_light);
+    glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+    
+    /*
+    glMaterialfv(GL_FRONT, GL_AMBIENT,   mat_ambient);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE,   mat_diffuse);
+    glMaterialfv(GL_FRONT, GL_SPECULAR,  mat_specular);
+     */
+    glMaterialfv(GL_FRONT, GL_SHININESS, high_shininess);
+     
 }
 
 static void createRobot() {
@@ -118,6 +143,7 @@ static void createRobot() {
 static void display(void) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_PROJECTION);
+    
     glLoadIdentity();
     GLint viewport[4];
     glGetIntegerv(GL_VIEWPORT, viewport);
@@ -194,7 +220,7 @@ static void changeColor() {
     
 }
 
-// Blink eyes by changing color to black.
+// Blink eyes by switching from white to black to white.
 static void blink() {
     
     if (eyeRed == 1) {
@@ -221,9 +247,19 @@ void keyboard(int key, int x, int y) {
         case 'c':           // Change color
             changeColor();
             break;
-        case 'd': break;    // Increase diffusive reflection
-        case 's': break;    // Increase specular reflection
-        case 'h': break;    // Increase shiny
+        case 'd':           // Increase diffusive reflection
+
+            break;
+        case 's':           // Increase specular reflection
+
+            break;
+        case 'h':           // Increase shiny
+            if (high_shininess[0] != 100) {
+                high_shininess[0] += 10;
+            } else
+                high_shininess[0] = 0;
+            
+            break;
         case 'j':           // Jump
             jump();
             break;
@@ -235,6 +271,7 @@ void keyboard(int key, int x, int y) {
             leftRun = 0;
             ypos = 0;
             bodyRotate.y++;
+            moved = false;
             break;
         case 'w': break;    // Wave arms
         case 'q':           // Quit
@@ -258,6 +295,7 @@ int main(int argc, char** argv) {
     
     // Random
     srand (time(NULL));
+    
     init();
     
     glutMainLoop();
