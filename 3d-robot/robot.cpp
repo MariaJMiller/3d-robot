@@ -5,6 +5,7 @@
 //  Copyright (c) 2015 Maria Miller. All rights reserved.
 //
 
+#include <cstdio>
 #include <stdio.h>
 #include <stdlib.h>
 #include <GLUT/glut.h>
@@ -26,9 +27,12 @@ struct color {
 rotation headRotate;
 rotation bodyRotate;
 rotation armRotate;
-rotation legRotate;
 color robotColor;
 color eyeColor;
+
+static int rightLegMove = 0;
+static int leftLegMove = 0;
+static int move = 2;
 
 void init() {
     glEnable(GL_DEPTH_TEST);
@@ -44,6 +48,10 @@ static void createRobot() {
     robotColor.r = 0;
     robotColor.g = 1;
     robotColor.b = 0;
+    
+    eyeColor.r = 1;
+    eyeColor.g = 1;
+    eyeColor.b = 1;
     
     // Create body
     glPushMatrix();
@@ -64,7 +72,7 @@ static void createRobot() {
     // Create right leg
     glPushMatrix();
     glTranslatef(-3, -11, 0);
-    glRotatef(angle, legRotate.x, legRotate.y, legRotate.z);
+    glRotatef(rightLegMove, 1.0f, 0, 0);
     glColor3f(robotColor.r, robotColor.g, robotColor.b);
     glScalef(0.7, 2.2, 1);
     glutSolidCube(5);
@@ -73,7 +81,7 @@ static void createRobot() {
     // Create left leg
     glPushMatrix();
     glTranslatef(3, -11, 0);
-    glRotatef(angle, legRotate.x, legRotate.y, legRotate.z);
+    glRotatef(leftLegMove, 1.0f, 0, 0);
     glColor3f(robotColor.r, robotColor.g, robotColor.b);
     glScalef(0.7, 2.2, 1);
     glutSolidCube(5);
@@ -100,7 +108,8 @@ static void createRobot() {
     // Right eye
     glPushMatrix();
     glTranslatef(-0.75, 8, 4);
-    glColor3f(1, 1, 1);
+    glRotatef(angle, headRotate.x, headRotate.y, headRotate.z);
+    glColor3f(eyeColor.r, eyeColor.g, eyeColor.b);
     glScalef(0.1, 0.1, 0.1);
     glutSolidCube(5);
     glPopMatrix();
@@ -108,7 +117,8 @@ static void createRobot() {
     // Left eye
     glPushMatrix();
     glTranslatef(0.75, 8, 4);
-    glColor3f(1, 1, 1);
+    glRotatef(angle, headRotate.x, headRotate.y, headRotate.z);
+    glColor3f(eyeColor.r, eyeColor.g, eyeColor.b);
     glScalef(0.1, 0.1, 0.1);
     glutSolidCube(5);
     glPopMatrix();
@@ -136,6 +146,10 @@ static void display(void) {
     glutSwapBuffers();
 }
 
+static void run () {
+    
+    
+}
 
 static void reshape(int width, int height) {
     
@@ -145,12 +159,13 @@ static void reshape(int width, int height) {
 void keyboard(int key, int x, int y) {
     switch(key) {
         case 'b': break;    // Blink eyes
-        case 'c': break;    // Change color
+        case 'c': robotColor.r++; break;    // Change color
         case 'd': break;    // Increase diffusive reflection
         case 's': break;    // Increase specular reflection
         case 'h': break;    // Increase shiny
         case 'j': break;    // Jump
-        case 't': break;    // Turn around
+        case 'r': run();     break; // Run
+        case 't':     break;    // Turn around
         case 'w': break;    // Wave arms
         case 'q': exit(0); break;    // Quit
             
@@ -167,6 +182,7 @@ int main(int argc, char** argv) {
     
     glutDisplayFunc(display);
     glutReshapeFunc(reshape);
+    glutSpecialFunc(keyboard);
     
     init();
     
