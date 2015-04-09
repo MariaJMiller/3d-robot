@@ -42,12 +42,12 @@ int eyeBlue = 1;
 GLfloat ambient_light[]  = { 0.0f, 0.0f, 0.0f, 1.0f };
 GLfloat diffuse_light[]  = { 0.1f, 0.0f, 0.0f, 0.0f };
 GLfloat specular_light[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-GLfloat light_position[] = { 2.0f, 8.0f, 8.0f, 1.0f };
+GLfloat light_position[] = { 2.0f, 1.0f, 1.0f, 1.0f };
 
 GLfloat mat_ambient[]    = { 0.7f, 0.7f, 0.7f, 1.0f };
 GLfloat mat_diffuse[]    = { 0.7f, 0.7f, 0.7f, 1.0f };
 GLfloat mat_specular[]   = { 1.0f, 1.0f, 1.0f, 1.0f };
-GLfloat high_shininess[] = { 20.0f };
+GLfloat high_shininess[] = { 10.0f };
 
 void init() {
     
@@ -61,11 +61,9 @@ void init() {
     glLightfv(GL_LIGHT0, GL_SPECULAR, specular_light);
     glLightfv(GL_LIGHT0, GL_POSITION, light_position);
     
-    /*
     glMaterialfv(GL_FRONT, GL_AMBIENT,   mat_ambient);
     glMaterialfv(GL_FRONT, GL_DIFFUSE,   mat_diffuse);
     glMaterialfv(GL_FRONT, GL_SPECULAR,  mat_specular);
-     */
     glMaterialfv(GL_FRONT, GL_SHININESS, high_shininess);
      
 }
@@ -155,7 +153,7 @@ static void display(void) {
     glLoadIdentity();
     
     // Move back
-    glTranslatef(-4, 8+ypos, -40);
+    glTranslatef(-4, 8, -40);
     
     // Create the robot
     glRotatef(bodyRotate.y, 0, 1.0f, 0);
@@ -238,23 +236,35 @@ static void blink() {
 // Increase diffusive reflection
 static void diffuseReflect() {
     for (int i = 0; i < 4; i++) {
-        if (diffuse_light[i] > 1)
-            diffuse_light[i] = 0;
-        else
+        if (diffuse_light[i] > 1) {
+            diffuse_light[i] = 0.0f;
+        }
+        else {
             diffuse_light[i] += 0.1f;
-        
+        }
     }
     glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse_light);
 }
 
 static void specularReflect() {
     for (int i = 0; i < 4; i++) {
-        if (specular_light[i] = 1)
-            specular_light[i] = 0;
-        else
+        if (specular_light[i] > 1.0f)
+            specular_light[i] = 0.0f;
+        else {
             specular_light[i] += 0.1f;
+        }
     }
+    
     glLightfv(GL_LIGHT0, GL_SPECULAR, specular_light);
+}
+
+static void increaseShiny() {
+    if (high_shininess[0] > 100)
+        high_shininess[0] = 0.0f;
+    else
+        high_shininess[0] += 10.0f;
+    
+    glMaterialfv(GL_FRONT, GL_SHININESS, high_shininess);
 }
 
 static void reshape(int width, int height) {
@@ -277,8 +287,7 @@ void keyboard(int key, int x, int y) {
             specularReflect();
             break;
         case 'h':           // Increase shiny
-            
-            
+            increaseShiny();
             break;
         case 'j':           // Jump
             jump();
