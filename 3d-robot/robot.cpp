@@ -8,6 +8,7 @@
 #include <cstdio>
 #include <ctime>
 #include <cstdlib>
+#include <iostream>
 #include <GLUT/glut.h>
 #include <OpenGL/gl.h>
 #include <OpenGL/glu.h>
@@ -38,13 +39,13 @@ int eyeGreen = 1;
 int eyeBlue = 1;
 
 
-const GLfloat ambient_light[]  = { 0.0f, 0.0f, 0.0f, 1.0f };
-const GLfloat diffuse_light[]  = { 1.0f, 1.0f, 1.0f, 1.0f };
-const GLfloat specular_light[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-const GLfloat light_position[] = { 2.0f, 8.0f, 8.0f, 1.0f };
+GLfloat ambient_light[]  = { 0.0f, 0.0f, 0.0f, 1.0f };
+GLfloat diffuse_light[]  = { 0.1f, 0.0f, 0.0f, 0.0f };
+GLfloat specular_light[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+GLfloat light_position[] = { 2.0f, 8.0f, 8.0f, 1.0f };
 
 GLfloat mat_ambient[]    = { 0.7f, 0.7f, 0.7f, 1.0f };
-GLfloat mat_diffuse[]    = { 0.1f, 0.1f, 0.1f, 1.0f };
+GLfloat mat_diffuse[]    = { 0.7f, 0.7f, 0.7f, 1.0f };
 GLfloat mat_specular[]   = { 1.0f, 1.0f, 1.0f, 1.0f };
 GLfloat high_shininess[] = { 20.0f };
 
@@ -234,6 +235,28 @@ static void blink() {
     }
 }
 
+// Increase diffusive reflection
+static void diffuseReflect() {
+    for (int i = 0; i < 4; i++) {
+        if (diffuse_light[i] > 1)
+            diffuse_light[i] = 0;
+        else
+            diffuse_light[i] += 0.1f;
+        
+    }
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse_light);
+}
+
+static void specularReflect() {
+    for (int i = 0; i < 4; i++) {
+        if (specular_light[i] = 1)
+            specular_light[i] = 0;
+        else
+            specular_light[i] += 0.1f;
+    }
+    glLightfv(GL_LIGHT0, GL_SPECULAR, specular_light);
+}
+
 static void reshape(int width, int height) {
     
     glViewport(0, 0, width, height);
@@ -248,16 +271,13 @@ void keyboard(int key, int x, int y) {
             changeColor();
             break;
         case 'd':           // Increase diffusive reflection
-
+            diffuseReflect();
             break;
         case 's':           // Increase specular reflection
-
+            specularReflect();
             break;
         case 'h':           // Increase shiny
-            if (high_shininess[0] != 100) {
-                high_shininess[0] += 10;
-            } else
-                high_shininess[0] = 0;
+            
             
             break;
         case 'j':           // Jump
@@ -292,7 +312,7 @@ int main(int argc, char** argv) {
     glutDisplayFunc(display);
     glutReshapeFunc(reshape);
     glutSpecialFunc(keyboard);
-    
+
     // Random
     srand (time(NULL));
     
