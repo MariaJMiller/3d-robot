@@ -26,8 +26,8 @@ rotation armRotate;
 static float rightRun = 0;
 static float leftRun = 0;
 static float ypos = 0;
-static float angle = 50;
-static float armPos = 7;
+float angle = 50;
+float armPos = 7;
 bool moved = false;
 bool jumped = false;
 
@@ -43,7 +43,7 @@ int eyeBlue = 1;
 GLfloat ambient_light[]  = { 0.1f, 1.0f, 0.3f, 1.0f };
 GLfloat diffuse_light[]  = { 0.1f, 0.3f, 0.5f, 1.0f };
 GLfloat specular_light[] = { 0.1f, 0.8f, 0.7f, 1.0f };
-GLfloat light_position[] = { 2.0f, 1.0f, 1.0f, 1.0f };
+GLfloat light_position[] = { 1.0f, 0, 0, 5.0f};
 
 GLfloat mat_ambient[]    = { 0.7f, 0.7f, 0.7f, 1.0f };
 GLfloat mat_diffuse[]    = { 0.7f, 0.7f, 0.7f, 1.0f };
@@ -282,11 +282,13 @@ static void increaseShiny() {
     glMaterialfv(GL_FRONT, GL_SHININESS, high_shininess);
 }
 
-//
+// Wave arms by moving angle from 50 to 20
 static void waveArms() {
     
-    angle = (-angle);
-    armPos = (-armPos);
+    if (angle == 50)
+        angle = 20;
+    else
+        angle = 50;
     
 }
 
