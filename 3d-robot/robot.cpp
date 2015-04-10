@@ -43,7 +43,7 @@ int eyeBlue = 1;
 GLfloat ambient_light[]  = { 0, 0, 0, 1.0f };
 GLfloat diffuse_light[]  = { 1.0f, 1.0f, 1.0f, 1.0f };
 GLfloat specular_light[] = { 0.1f, 0.1f, 0.1f, 1.0f };
-GLfloat light_position[] = { 2.0f, 5.0f, 0, 5.0f};
+GLfloat light_position[] = { -10.0f, 0, -2.0f, 1.0f};
 
 GLfloat mat_ambient[]    = { 0.7f, 0.7f, 0.7f, 1.0f };
 GLfloat mat_diffuse[]    = { 0.7f, 0.7f, 0.7f, 1.0f };
@@ -199,7 +199,7 @@ static void changeColor() {
         specular_light[i] = 0;
     }
     glLightfv(GL_LIGHT0, GL_SPECULAR, specular_light);
-    
+
     red = rand() % 2;
     green = rand() % 2;
     blue = rand() % 2;
@@ -332,6 +332,7 @@ static void display(void) {
     glOrtho(-10.0f, 10.0f, -10.0f, 10.0f, -10.0f, 10.0f);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
+    // Isometric view
     glRotatef(45.0f, 1.0f, 0.0f, 0.0f);
     glRotatef(-45.0f, 0.0f, 1.0f, 0.0f);
     
