@@ -38,10 +38,9 @@ int eyeRed = 1;
 int eyeGreen = 1;
 int eyeBlue = 1;
 
-
-GLfloat ambient_light[]  = { 0.0f, 0.0f, 0.0f, 1.0f };
-GLfloat diffuse_light[]  = { 0.1f, 0.0f, 0.0f, 0.0f };
-GLfloat specular_light[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+GLfloat ambient_light[]  = { 0.1f, 1.0f, 0.3f, 1.0f };
+GLfloat diffuse_light[]  = { 0.1f, 0.3f, 0.5f, 1.0f };
+GLfloat specular_light[] = { 0.1f, 0.8f, 0.7f, 1.0f };
 GLfloat light_position[] = { 2.0f, 1.0f, 1.0f, 1.0f };
 
 GLfloat mat_ambient[]    = { 0.7f, 0.7f, 0.7f, 1.0f };
@@ -235,23 +234,38 @@ static void blink() {
 
 // Increase diffusive reflection
 static void diffuseReflect() {
+
+    float value = 0.1f;
+    
     for (int i = 0; i < 4; i++) {
-        if (diffuse_light[i] > 1) {
-            diffuse_light[i] = 0.0f;
+        value = 0.1f;
+        if (diffuse_light[i] >= 1) {
+            diffuse_light[i] = 0;
+            std::cout << "=== 1 " << diffuse_light[i];
         }
         else {
-            diffuse_light[i] += 0.1f;
+            std::cout << "NOT 1 ";
+            diffuse_light[i] += value;
         }
     }
+    
+    
     glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse_light);
 }
 
 static void specularReflect() {
+   
+    float value = 0.1f;
+    
     for (int i = 0; i < 4; i++) {
-        if (specular_light[i] > 1.0f)
-            specular_light[i] = 0.0f;
+        value = 0.1f;
+        if (specular_light[i] >= 1) {
+            specular_light[i] = 0;
+            std::cout << "=== 1 " << specular_light[i];
+        }
         else {
-            specular_light[i] += 0.1f;
+            std::cout << "NOT 1 ";
+            specular_light[i] += value;
         }
     }
     
@@ -259,7 +273,7 @@ static void specularReflect() {
 }
 
 static void increaseShiny() {
-    if (high_shininess[0] > 100)
+    if (high_shininess[0] >= 100)
         high_shininess[0] = 0.0f;
     else
         high_shininess[0] += 10.0f;
