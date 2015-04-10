@@ -23,9 +23,11 @@ rotation bodyRotate;
 rotation armRotate;
 
 // Movement
-static int rightRun = 0;
-static int leftRun = 0;
-int ypos = 0;
+static float rightRun = 0;
+static float leftRun = 0;
+static float ypos = 0;
+static float angle = 50;
+static float armPos = 7;
 bool moved = false;
 bool jumped = false;
 
@@ -104,19 +106,21 @@ static void createRobot() {
     
     // Right arm
     glPushMatrix();
-    glTranslatef(-7, 0, 0);
-    glRotatef(leftRun, 1.0f, 0, 0);
+    glTranslatef(-armPos, 5, 0);
+    //glRotatef(leftRun, 2.0f, 0, 0);
+    glRotatef(angle, 0, 0, 1.0f);
     glColor3f(red, green, blue);
-    glScalef(0.5, 1.8, 0.5);
+    glScalef(0.3, 1.8, 0.5);
     glutSolidCube(5);
     glPopMatrix();
     
     // Left arm
     glPushMatrix();
-    glTranslatef(7, 0, 0);
-    glRotatef(rightRun, 1.0f, 0, 0);
+    glTranslatef(armPos, 5, 0);
+    //glRotatef(rightRun, 1.0f, 0, 0);
+    glRotatef(-angle, 0, 0, 1.0f);
     glColor3f(red, green, blue);
-    glScalef(0.5, 1.8, 0.5);
+    glScalef(0.3, 1.8, 0.5);
     glutSolidCube(5);
     glPopMatrix();
     
@@ -161,6 +165,7 @@ static void display(void) {
     glutSwapBuffers();
 }
 
+// Move arms and legs
 static void run () {
 
     if (!moved) {
@@ -209,6 +214,7 @@ static void jump() {
     }
 }
 
+// TODO - Change color using light.
 // Change color of robot
 static void changeColor() {
     
@@ -239,16 +245,13 @@ static void diffuseReflect() {
     
     for (int i = 0; i < 4; i++) {
         value = 0.1f;
-        if (diffuse_light[i] >= 1) {
+        if (diffuse_light[i] >= 1)
             diffuse_light[i] = 0;
-            std::cout << "=== 1 " << diffuse_light[i];
-        }
-        else {
-            std::cout << "NOT 1 ";
+        
+        else
             diffuse_light[i] += value;
-        }
-    }
     
+    }
     
     glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse_light);
 }
@@ -259,14 +262,12 @@ static void specularReflect() {
     
     for (int i = 0; i < 4; i++) {
         value = 0.1f;
-        if (specular_light[i] >= 1) {
+        if (specular_light[i] >= 1)
             specular_light[i] = 0;
-            std::cout << "=== 1 " << specular_light[i];
-        }
-        else {
-            std::cout << "NOT 1 ";
+        
+        else
             specular_light[i] += value;
-        }
+        
     }
     
     glLightfv(GL_LIGHT0, GL_SPECULAR, specular_light);
@@ -279,6 +280,14 @@ static void increaseShiny() {
         high_shininess[0] += 10.0f;
     
     glMaterialfv(GL_FRONT, GL_SHININESS, high_shininess);
+}
+
+//
+static void waveArms() {
+    
+    angle = (-angle);
+    armPos = (-armPos);
+    
 }
 
 static void reshape(int width, int height) {
@@ -313,10 +322,12 @@ void keyboard(int key, int x, int y) {
             rightRun = 0;
             leftRun = 0;
             ypos = 0;
-            bodyRotate.y++;
+            bodyRotate.y+=5;
             moved = false;
             break;
-        case 'w': break;    // Wave arms
+        case 'w':           // Wave arms
+            waveArms();
+            break;
         case 'q':           // Quit
             exit(0);
             break;
